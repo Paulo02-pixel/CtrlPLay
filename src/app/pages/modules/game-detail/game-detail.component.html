@@ -1,0 +1,311 @@
+<!-- Game Detail Component -->
+<div class="game-detail-container">
+  <!-- Hero Section -->
+  <div class="game-hero">
+    <div class="hero-background">
+      <img [src]="game?.heroImage || game?.image" [alt]="game?.title" class="hero-bg-image">
+      <div class="hero-overlay"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="game-info">
+              <!-- Breadcrumb -->
+              <div class="breadcrumb-nav">
+                <span (click)="navigateBack()" class="breadcrumb-link">
+                  <i class="pi pi-arrow-left"></i> Back to Games
+                </span>
+              </div>
+
+              <!-- Game Title and Meta -->
+              <div class="game-header">
+                <h1 class="game-title">{{ game?.title }}</h1>
+                <div class="game-meta">
+                  <div class="meta-item">
+                    <i class="pi pi-star-fill"></i>
+                    <span>{{ game?.rating }}/5</span>
+                  </div>
+                  <div class="meta-item">
+                    <i class="pi pi-calendar"></i>
+                    <span>{{ game?.releaseDate }}</span>
+                  </div>
+                  <div class="meta-item">
+                    <i class="pi pi-tag"></i>
+                    <span>{{ game?.genre }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Game Description -->
+              <div class="game-description">
+                <p>{{ game?.description }}</p>
+              </div>
+
+              <!-- Game Actions -->
+              <div class="game-actions">
+                <div class="price-section" *ngIf="!game?.isFree">
+                  <div class="price-display text-white">
+                    <span class="current-price">${{ game?.price }}</span>
+                    <span class="original-price" *ngIf="game?.originalPrice">${{ game?.originalPrice }}</span>
+                    <span class="discount-badge" *ngIf="game?.discount">-{{ game?.discount }}%</span>
+                  </div>
+                </div>
+
+                <div class="action-buttons">
+                  <p-button
+                    *ngIf="game?.isFree"
+                    label="PLAY NOW"
+                    icon="pi pi-play"
+                    (onClick)="playGame()"
+                    styleClass="p-button-success btn-large">
+                  </p-button>
+
+                  <p-button
+                    *ngIf="!game?.isFree && !game?.isInLibrary"
+                    label="ADD TO CART"
+                    icon="pi pi-shopping-cart"
+                    (onClick)="addToCart()"
+                    styleClass="p-button-primary btn-large">
+                  </p-button>
+
+                  <p-button
+                    *ngIf="game?.isInLibrary"
+                    label="PLAY"
+                    icon="pi pi-play"
+                    (onClick)="playGame()"
+                    styleClass="p-button-success btn-large">
+                  </p-button>
+
+                  <p-button
+                    label="ADD TO WISHLIST"
+                    icon="pi pi-heart"
+                    [iconPos]="'left'"
+                    (onClick)="addToWishlist()"
+                    styleClass="p-button-outlined btn-large wishlist-btn"
+                    [class.active]="game?.isInWishlist">
+                  </p-button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="game-media">
+              <!-- Game Trailer -->
+              <div class="trailer-section">
+                <div class="trailer-thumbnail">
+                  <img [src]="game?.trailerThumbnail || game?.image" [alt]="game?.title">
+                  <div class="play-overlay" (click)="playTrailer()">
+                    <i class="pi pi-play"></i>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Game Screenshots -->
+              <div class="screenshots-section">
+                <h5>Screenshots</h5>
+                <div class="screenshots-grid">
+                  <div class="screenshot-item"
+                       *ngFor="let screenshot of game?.screenshots"
+                       (click)="openScreenshot(screenshot)">
+                    <img [src]="screenshot.thumbnail" [alt]="'Screenshot ' + screenshot.id">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Details Section -->
+  <div class="game-details">
+    <div class="container">
+      <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+          <!-- Game Information Tabs -->
+          <div class="detail-tabs">
+            <p-tabView [(activeIndex)]="activeTabIndex">
+              <p-tabPanel header="Overview">
+                <div class="tab-content">
+                  <h4>About This Game</h4>
+                  <p>{{ game?.fullDescription }}</p>
+
+                  <h5>Key Features</h5>
+                  <ul class="features-list">
+                    <li *ngFor="let feature of game?.features">
+                      <i class="pi pi-check"></i>
+                      <span>{{ feature }}</span>
+                    </li>
+                  </ul>
+                </div>
+              </p-tabPanel>
+
+              <p-tabPanel header="System Requirements">
+                <div class="tab-content">
+                  <div class="requirements-grid">
+                    <div class="requirement-section">
+                      <h5>Minimum Requirements</h5>
+                      <div class="requirement-item">
+                        <strong>OS:</strong> {{ game?.systemRequirements?.minimum?.os }}
+                      </div>
+                      <div class="requirement-item">
+                        <strong>Processor:</strong> {{ game?.systemRequirements?.minimum?.processor }}
+                      </div>
+                      <div class="requirement-item">
+                        <strong>Memory:</strong> {{ game?.systemRequirements?.minimum?.memory }}
+                      </div>
+                      <div class="requirement-item">
+                        <strong>Graphics:</strong> {{ game?.systemRequirements?.minimum?.graphics }}
+                      </div>
+                      <div class="requirement-item">
+                        <strong>Storage:</strong> {{ game?.systemRequirements?.minimum?.storage }}
+                      </div>
+                    </div>
+
+                    <div class="requirement-section">
+                      <h5>Recommended Requirements</h5>
+                      <div class="requirement-item">
+                        <strong>OS:</strong> {{ game?.systemRequirements?.recommended?.os }}
+                      </div>
+                      <div class="requirement-item">
+                        <strong>Processor:</strong> {{ game?.systemRequirements?.recommended?.processor }}
+                      </div>
+                      <div class="requirement-item">
+                        <strong>Memory:</strong> {{ game?.systemRequirements?.recommended?.memory }}
+                      </div>
+                      <div class="requirement-item">
+                        <strong>Graphics:</strong> {{ game?.systemRequirements?.recommended?.graphics }}
+                      </div>
+                      <div class="requirement-item">
+                        <strong>Storage:</strong> {{ game?.systemRequirements?.recommended?.storage }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </p-tabPanel>
+
+              <p-tabPanel header="Reviews">
+                <div class="tab-content">
+                  <div class="reviews-summary">
+                    <h5>Player Reviews</h5>
+                    <div class="rating-overview">
+                      <div class="rating-score">
+                        <span class="score">{{ game?.rating }}</span>
+                        <div class="stars">
+                          <i class="pi pi-star-fill" *ngFor="let star of getStarArray(game?.rating ?? 0)"></i>
+                        </div>
+                      </div>
+                      <div class="rating-details">
+                        <span>Based on {{ game?.reviewCount }} reviews</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="reviews-list">
+                    <div class="review-item" *ngFor="let review of game?.reviews">
+                      <div class="review-header">
+                        <div class="reviewer-info">
+                          <img [src]="review.avatar" [alt]="review.username" class="reviewer-avatar">
+                          <span class="reviewer-name">{{ review.username }}</span>
+                        </div>
+                        <div class="review-rating">
+                          <i class="pi pi-star-fill" *ngFor="let star of getStarArray(review.rating)"></i>
+                        </div>
+                      </div>
+                      <div class="review-content">
+                        <p>{{ review.content }}</p>
+                        <small class="review-date">{{ review.date | date:'medium' }}</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </p-tabPanel>
+            </p-tabView>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+          <div class="game-sidebar">
+            <!-- Game Stats -->
+            <div class="sidebar-section">
+              <h5>Game Information</h5>
+              <div class="game-stats">
+                <div class="stat-item">
+                  <span class="stat-label">Developer:</span>
+                  <span class="stat-value">{{ game?.developer }}</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Publisher:</span>
+                  <span class="stat-value">{{ game?.publisher }}</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Release Date:</span>
+                  <span class="stat-value">{{ game?.releaseDate }}</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Platforms:</span>
+                  <div class="platforms">
+                    <i class="pi pi-desktop platform-icon" *ngIf="game?.platforms?.includes('pc')" title="PC"></i>
+                    <i class="pi pi-mobile platform-icon" *ngIf="game?.platforms?.includes('mobile')" title="Mobile"></i>
+                    <i class="pi pi-tablet platform-icon" *ngIf="game?.platforms?.includes('console')" title="Console"></i>
+                  </div>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Genre:</span>
+                  <span class="stat-value">{{ game?.genre }}</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">File Size:</span>
+                  <span class="stat-value">{{ game?.fileSize }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Related Games -->
+            <div class="sidebar-section">
+              <h5>You might also like</h5>
+              <div class="related-games">
+                <div class="related-game"
+                     *ngFor="let relatedGame of relatedGames"
+                     (click)="viewRelatedGame(relatedGame.id)">
+                  <img [src]="relatedGame.image" [alt]="relatedGame.title">
+                  <div class="related-info">
+                    <h6>{{ relatedGame.title }}</h6>
+                    <div class="related-price">
+                      <span *ngIf="relatedGame.isFree" class="free-label">Free</span>
+                      <span *ngIf="!relatedGame.isFree" class="price">${{ relatedGame.price }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading State -->
+<div class="loading-container" *ngIf="loading">
+  <div class="text-center">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+    <p>Loading game details...</p>
+  </div>
+</div>
+
+<!-- Error State -->
+<div class="error-container" *ngIf="error">
+  <div class="text-center">
+    <i class="pi pi-exclamation-triangle" style="font-size: 2rem; color: var(--red-500)"></i>
+    <h3>Game not found</h3>
+    <p>The game you're looking for doesn't exist or has been removed.</p>
+    <p-button label="Back to Games" (onClick)="navigateBack()" styleClass="p-button-outlined"></p-button>
+  </div>
+</div>

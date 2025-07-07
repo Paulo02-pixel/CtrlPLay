@@ -1,0 +1,140 @@
+<div class="streaming-container">
+  <!-- Header Section -->
+  <div class="streaming-header">
+    <div class="header-content">
+      <div class="title-section">
+        <h1>Live Streaming</h1>
+        <p>Watch your favorite streamers and discover new content</p>
+      </div>
+      <div class="search-section">
+        <div class="search-box">
+          <i class="pi pi-search"></i>
+          <input
+            type="text"
+            placeholder="Search streams, games, or streamers..."
+            [(ngModel)]="searchTerm"
+            (keyup.enter)="onSearch()"
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Featured Stream Section -->
+  <div class="featured-section">
+    <div class="featured-stream">
+      <div class="featured-thumbnail">
+        <img [src]="featuredStream.thumbnail" [alt]="featuredStream.title">
+        <div class="live-badge">
+          <i class="pi pi-circle-fill"></i>
+          LIVE
+        </div>
+        <div class="viewer-count">
+          <i class="pi pi-eye"></i>
+          {{formatViewers(featuredStream.viewers)}} viewers
+        </div>
+        <div class="play-overlay" (click)="watchStream(featuredStream.id)">
+          <i class="pi pi-play"></i>
+        </div>
+      </div>
+      <div class="featured-info">
+        <div class="streamer-info">
+          <img [src]="featuredStream.avatar" [alt]="featuredStream.streamer" class="streamer-avatar">
+          <div class="streamer-details">
+            <h3>{{featuredStream.title}}</h3>
+            <p class="streamer-name">{{featuredStream.streamer}}</p>
+            <p class="game-name">{{featuredStream.game}}</p>
+          </div>
+        </div>
+        <div class="featured-description">
+          <p>{{featuredStream.description}}</p>
+        </div>
+        <div class="featured-actions">
+          <button class="btn btn-primary" (click)="watchStream(featuredStream.id)">
+            <i class="pi pi-play"></i>
+            Watch Now
+          </button>
+          <button class="btn btn-outline" (click)="followStreamer(featuredStream.streamer)">
+            <i class="pi pi-plus"></i>
+            Follow
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Categories Section -->
+  <div class="categories-section">
+    <h2>Browse Categories</h2>
+    <div class="categories-grid">
+      <div
+        *ngFor="let category of streamCategories"
+        class="category-card"
+        [class.active]="selectedCategory === category.id"
+        (click)="selectCategory(category.id)"
+      >
+        <div class="category-icon">
+          <i [class]="'pi ' + category.icon"></i>
+        </div>
+        <div class="category-info">
+          <h4>{{category.name}}</h4>
+          <p>{{category.count}} streams</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Streams Section -->
+  <div class="streams-section">
+    <div class="section-header">
+      <h2>Live Streams</h2>
+      <div class="stream-count">
+        {{getFilteredStreams().length}} streams live
+      </div>
+    </div>
+
+    <div class="streams-grid">
+      <div
+        *ngFor="let stream of getFilteredStreams()"
+        class="stream-card"
+        (click)="watchStream(stream.id)"
+      >
+        <div class="stream-thumbnail">
+          <img [src]="stream.thumbnail" [alt]="stream.title">
+          <div class="live-indicator">
+            <i class="pi pi-circle-fill"></i>
+            LIVE
+          </div>
+          <div class="viewer-badge">
+            <i class="pi pi-eye"></i>
+            {{formatViewers(stream.viewers)}}
+          </div>
+        </div>
+        <div class="stream-info">
+          <div class="stream-header">
+            <img [src]="stream.avatar" [alt]="stream.streamer" class="stream-avatar">
+            <div class="stream-details">
+              <h4>{{stream.title}}</h4>
+              <p class="stream-streamer">{{stream.streamer}}</p>
+              <p class="stream-game">{{stream.game}}</p>
+            </div>
+          </div>
+          <div class="stream-actions">
+            <button class="follow-btn" (click)="followStreamer(stream.streamer); $event.stopPropagation()">
+              <i class="pi pi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="getFilteredStreams().length === 0" class="empty-state">
+    <div class="empty-icon">
+      <i class="pi pi-video"></i>
+    </div>
+    <h3>No streams found</h3>
+    <p>Try adjusting your search or category filters</p>
+  </div>
+</div>

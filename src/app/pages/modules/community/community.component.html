@@ -1,0 +1,188 @@
+<!-- community.component.html -->
+<div class="community-container">
+  <!-- Header Section -->
+  <div class="community-header">
+    <div class="header-content">
+      <div class="header-left">
+        <h1>Community</h1>
+        <p>Connect with gamers worldwide</p>
+      </div>
+      <div class="header-right">
+        <button class="btn btn-primary" (click)="createPost()">
+          <i class="pi pi-plus"></i>
+          Create Post
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="community-content">
+    <!-- Left Column -->
+    <div class="left-column">
+      <!-- Featured Groups -->
+      <div class="section-card">
+        <div class="section-header">
+          <h3>Featured Groups</h3>
+          <button class="btn btn-outline-primary btn-sm">View All</button>
+        </div>
+        <div class="groups-grid">
+          <div class="group-card" *ngFor="let group of featuredGroups">
+            <div class="group-image">
+              <img [src]="group.image" [alt]="group.name" />
+              <div class="group-overlay">
+                <button
+                  class="btn btn-sm"
+                  [class.btn-danger]="group.isJoined"
+                  [class.btn-primary]="!group.isJoined"
+                  (click)="joinGroup(group.id)"
+                >
+                  {{ group.isJoined ? 'Leave' : 'Join' }}
+                </button>
+              </div>
+            </div>
+            <div class="group-info">
+              <h4>{{ group.name }}</h4>
+              <p>{{ group.description }}</p>
+              <div class="group-stats">
+                <span class="members">
+                  <i class="pi pi-users"></i>
+                  {{ group.members | number }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Posts -->
+      <div class="section-card">
+        <div class="section-header">
+          <h3>Recent Posts</h3>
+          <p-dropdown
+            [options]="[
+              {label: 'All Groups', value: 'all'},
+              {label: 'My Groups', value: 'my'},
+              {label: 'Following', value: 'following'}
+            ]"
+            [(ngModel)]="selectedFilter"
+            placeholder="All Groups"
+            [style]="{'width': '150px'}"
+          ></p-dropdown>
+        </div>
+        <div class="posts-list">
+          <div class="post-card" *ngFor="let post of recentPosts">
+            <div class="post-header">
+              <div class="post-author">
+                <img [src]="post.avatar" [alt]="post.author" class="author-avatar" />
+                <div class="author-info">
+                  <h5>{{ post.author }}</h5>
+                  <span class="group-name">{{ post.group }}</span>
+                  <span class="post-time">{{ post.timestamp }}</span>
+                </div>
+              </div>
+              <button class="btn btn-outline-secondary btn-sm">
+                <i class="pi pi-ellipsis-h"></i>
+              </button>
+            </div>
+            <div class="post-content">
+              <h4>{{ post.title }}</h4>
+              <p>{{ post.content }}</p>
+            </div>
+            <div class="post-actions">
+              <button
+                class="action-btn"
+                [class.active]="post.isLiked"
+                (click)="likePost(post.id)"
+              >
+                <i class="pi pi-heart"></i>
+                <span>{{ post.likes }}</span>
+              </button>
+              <button class="action-btn">
+                <i class="pi pi-comment"></i>
+                <span>{{ post.comments }}</span>
+              </button>
+              <button class="action-btn">
+                <i class="pi pi-share-alt"></i>
+                <span>Share</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="right-column">
+      <!-- Online Friends -->
+      <div class="section-card">
+        <div class="section-header">
+          <h3>Online Now</h3>
+          <span class="online-count">{{ onlineUsers.length }} online</span>
+        </div>
+        <div class="users-list">
+          <div class="user-item" *ngFor="let user of onlineUsers">
+            <div class="user-avatar">
+              <img [src]="user.avatar" [alt]="user.name" />
+              <div class="status-indicator"></div>
+            </div>
+            <div class="user-info">
+              <h5>{{ user.name }}</h5>
+              <p>{{ user.status }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="section-card">
+        <div class="section-header">
+          <h3>Quick Actions</h3>
+        </div>
+        <div class="quick-actions">
+          <button class="action-item">
+            <i class="pi pi-users"></i>
+            <span>Find Groups</span>
+          </button>
+          <button class="action-item">
+            <i class="pi pi-user-plus"></i>
+            <span>Find Friends</span>
+          </button>
+          <button class="action-item">
+            <i class="pi pi-calendar"></i>
+            <span>Events</span>
+          </button>
+          <button class="action-item">
+            <i class="pi pi-trophy"></i>
+            <span>Tournaments</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Community Stats -->
+      <div class="section-card">
+        <div class="section-header">
+          <h3>Community Stats</h3>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-number">2.4K</div>
+            <div class="stat-label">Active Members</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">156</div>
+            <div class="stat-label">Groups</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">892</div>
+            <div class="stat-label">Posts Today</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">45</div>
+            <div class="stat-label">Events</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

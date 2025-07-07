@@ -1,0 +1,172 @@
+<div class="games-container">
+  <!-- Featured Game Banner -->
+  <div class="featured-banner" *ngIf="featuredGame">
+    <div class="featured-background">
+      <img [src]="featuredGame.image" [alt]="featuredGame.title" class="featured-bg-image">
+      <div class="featured-overlay"></div>
+    </div>
+    <div class="featured-content">
+      <div class="featured-info">
+        <div class="featured-badge">
+          <i class="pi pi-star-fill"></i>
+          <span>AVAILABLE PRE-ORDER</span>
+        </div>
+        <h1 class="featured-title">{{ featuredGame.title }}</h1>
+        <p class="featured-description">{{ featuredGame.description }}</p>
+        <div class="featured-actions">
+          <button class="btn btn-primary featured-btn" (click)="viewGameDetails(featuredGame.id)">
+            PRE-ORDER NOW
+          </button>
+          <button class="btn btn-outline-light featured-btn-secondary">
+            <i class="pi pi-play"></i>
+            TRAILER
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filters Section -->
+  <div class="filters-section">
+    <div class="search-bar">
+      <span class="p-input-icon-left w-100">
+        <i class="pi pi-search"></i>
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()"
+          placeholder="Search for games..."
+          class="w-100"
+        />
+      </span>
+    </div>
+
+    <div class="filter-controls">
+      <div class="filter-item">
+        <label>Sort by:</label>
+        <p-dropdown
+          [options]="sortOptions"
+          [(ngModel)]="sortBy"
+          (onChange)="onSortChange()"
+          optionLabel="label"
+          optionValue="value"
+          [showClear]="false"
+        ></p-dropdown>
+      </div>
+
+      <div class="filter-item">
+        <p-checkbox
+          [(ngModel)]="showFreeOnly"
+          (onChange)="onFreeToggle()"
+          binary="true"
+          inputId="free-only"
+        ></p-checkbox>
+        <label for="free-only">Free games only</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Genres -->
+  <div class="genres-section">
+    <h2 class="section-title">Game genres</h2>
+    <div class="genres-grid">
+      <div
+        class="genre-card"
+        *ngFor="let genre of gameGenres"
+        [class.selected]="isGenreSelected(genre.id)"
+        (click)="onGenreToggle(genre.id)"
+        [style.border-color]="genre.color"
+      >
+        <div class="genre-icon" [style.background-color]="genre.color">
+          <i [class]="'pi ' + genre.icon"></i>
+        </div>
+        <span class="genre-name">{{ genre.name }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Games Grid -->
+  <div class="games-section">
+    <div class="section-header">
+      <h2 class="section-title">
+        {{ showFreeOnly ? 'Top 20 free games' : 'All Games' }}
+        <span class="games-count">({{ filteredGames.length }})</span>
+      </h2>
+      <div class="view-toggle">
+        <button class="view-btn active">
+          <i class="pi pi-th-large"></i>
+        </button>
+        <button class="view-btn">
+          <i class="pi pi-list"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="games-grid" *ngIf="filteredGames.length > 0">
+      <div
+        class="game-card"
+        *ngFor="let game of filteredGames"
+        (click)="viewGameDetails(game.id)"
+      >
+        <div class="game-image-container">
+          <img [src]="game.image" [alt]="game.title" class="game-image">
+          <div class="game-badges">
+            <span class="badge badge-hot" *ngIf="game.isHot">HOT</span>
+            <span class="badge badge-free" *ngIf="game.isFree">FREE</span>
+            <span class="badge badge-discount" *ngIf="game.discount">-{{ game.discount }}%</span>
+          </div>
+          <div class="game-overlay">
+            <div class="game-platforms">
+              <i
+                *ngFor="let platform of game.platforms"
+                [class]="'pi ' + getPlatformIcon(platform)"
+                [title]="platform"
+              ></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="game-info">
+          <h3 class="game-title">{{ game.title }}</h3>
+          <div class="game-genres">
+            <span
+              class="genre-tag"
+              *ngFor="let genre of game.genre.slice(0, 2)"
+              [style.background-color]="getGenreColor(genre)"
+            >
+              {{ getGenreName(genre) }}
+            </span>
+          </div>
+          <div class="game-rating">
+            <div class="stars">
+              <i class="pi pi-star-fill" *ngFor="let star of getStarsArray(game.rating)"></i>
+              <i class="pi pi-star" *ngIf="game.rating % 1 !== 0"></i>
+            </div>
+            <span class="rating-text">{{ game.rating }}</span>
+          </div>
+          <div class="game-price">
+            <span class="current-price" [class.free]="game.isFree">
+              {{ game.isFree ? 'Free' : '$' + game.price }}
+            </span>
+            <span class="original-price" *ngIf="game.originalPrice">
+              ${{ game.originalPrice }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Results -->
+    <div class="no-results" *ngIf="filteredGames.length === 0">
+      <div class="no-results-icon">
+        <i class="pi pi-search"></i>
+      </div>
+      <h3>No games found</h3>
+      <p>Try adjusting your search terms or filters</p>
+      <button class="btn btn-primary" (click)="searchTerm = ''; selectedGenres = []; showFreeOnly = false; applyFilters()">
+        Clear All Filters
+      </button>
+    </div>
+  </div>
+</div>

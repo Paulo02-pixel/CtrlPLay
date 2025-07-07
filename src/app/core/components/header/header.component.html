@@ -1,0 +1,66 @@
+<div class="header">
+      <div class="search-section">
+        <div class="search-container">
+          <i class="pi pi-search"></i>
+          <input
+            type="text"
+            placeholder="Search for games"
+            [(ngModel)]="searchQuery"
+            (keyup.enter)="search()"
+          />
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="action-btn" title="Notifications">
+          <i class="pi pi-bell"></i>
+          <span class="badge">3</span>
+        </button>
+
+        <button class="action-btn" title="Messages">
+          <i class="pi pi-envelope"></i>
+          <span class="badge">2</span>
+        </button>
+
+        <div class="user-menu">
+          <p-avatar
+            image="https://via.placeholder.com/40"
+            shape="circle"
+            size="normal"
+            (click)="toggleUserMenu()"
+          ></p-avatar>
+
+          <div class="user-dropdown" *ngIf="showUserMenu">
+            <div class="user-info">
+              <p-avatar
+                image="https://via.placeholder.com/50"
+                shape="circle"
+                size="large"
+              ></p-avatar>
+              <div class="user-details">
+                <h6>Paulo Quincho</h6>
+                <p>Pro Member</p>
+              </div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" (click)="navigate('/ctrlplay/profile')">
+              <i class="pi pi-user"></i>
+              <span>Profile</span>
+            </div>
+            <div class="dropdown-item">
+              <i class="pi pi-cog"></i>
+              <span>Settings</span>
+            </div>
+            <div class="dropdown-item">
+              <i class="pi pi-wallet"></i>
+              <span>Wallet</span>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item logout">
+              <i class="pi pi-sign-out"></i>
+              <span>Sign Out</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

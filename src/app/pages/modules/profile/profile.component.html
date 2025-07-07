@@ -1,0 +1,286 @@
+<div class="profile-container">
+  <!-- Header Section -->
+  <div class="profile-header">
+    <div class="profile-banner">
+      <div class="profile-info">
+        <div class="avatar-section">
+          <img [src]="userProfile.avatar" [alt]="userProfile.username" class="profile-avatar">
+          <div class="level-badge">
+            <i class="pi pi-star"></i>
+            <span>{{userProfile.level}}</span>
+          </div>
+        </div>
+        <div class="user-details">
+          <h1 class="username">{{userProfile.username}}</h1>
+          <p class="join-date">Member since {{userProfile.joinDate | date:'MMMM yyyy'}}</p>
+          <div class="experience-bar">
+            <div class="xp-info">
+              <span>Level {{userProfile.level}}</span>
+              <span>{{userProfile.experiencePoints}} XP</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="getExperiencePercentage()"></div>
+            </div>
+          </div>
+        </div>
+        <div class="profile-actions">
+          <button
+            pButton
+            type="button"
+            [label]="isEditing ? 'Cancel' : 'Edit Profile'"
+            class="p-button-outlined"
+            (click)="isEditing ? cancelEdit() : startEditing()"
+          >
+            <i class="pi" [class.pi-pencil]="!isEditing" [class.pi-times]="isEditing"></i>
+          </button>
+          <button
+            pButton
+            type="button"
+            label="Save Changes"
+            class="p-button-success"
+            *ngIf="isEditing"
+            (click)="saveProfile()"
+          >
+            <i class="pi pi-check"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Overview -->
+  <div class="stats-overview">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="pi pi-gamepad-2"></i>
+      </div>
+      <div class="stat-info">
+        <h3>{{userProfile.gamesOwned}}</h3>
+        <p>Games Owned</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="pi pi-clock"></i>
+      </div>
+      <div class="stat-info">
+        <h3>{{userProfile.hoursPlayed}}</h3>
+        <p>Hours Played</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="pi pi-trophy"></i>
+      </div>
+      <div class="stat-info">
+        <h3>{{userProfile.achievements}}</h3>
+        <p>Achievements</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="pi pi-users"></i>
+      </div>
+      <div class="stat-info">
+        <h3>{{userProfile.friends}}</h3>
+        <p>Friends</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-navigation">
+    <button
+      class="tab-button"
+      [class.active]="activeTab === 'overview'"
+      (click)="setActiveTab('overview')"
+    >
+      <i class="pi pi-home"></i>
+      <span>Overview</span>
+    </button>
+    <button
+      class="tab-button"
+      [class.active]="activeTab === 'games'"
+      (click)="setActiveTab('games')"
+    >
+      <i class="pi pi-gamepad-2"></i>
+      <span>Games</span>
+    </button>
+    <button
+      class="tab-button"
+      [class.active]="activeTab === 'achievements'"
+      (click)="setActiveTab('achievements')"
+    >
+      <i class="pi pi-trophy"></i>
+      <span>Achievements</span>
+    </button>
+    <button
+      class="tab-button"
+      [class.active]="activeTab === 'friends'"
+      (click)="setActiveTab('friends')"
+    >
+      <i class="pi pi-users"></i>
+      <span>Friends</span>
+    </button>
+    <button
+      class="tab-button"
+      [class.active]="activeTab === 'settings'"
+      (click)="setActiveTab('settings')"
+    >
+      <i class="pi pi-cog"></i>
+      <span>Settings</span>
+    </button>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <!-- Overview Tab -->
+    <div class="tab-pane" *ngIf="activeTab === 'overview'">
+      <div class="overview-grid">
+        <div class="recent-games-section">
+          <h3>Recent Games</h3>
+          <div class="recent-games-list">
+            <div class="recent-game-card" *ngFor="let game of userProfile.recentGames" (click)="viewGame(game.id)">
+              <img [src]="game.image" [alt]="game.name" class="game-image">
+              <div class="game-info">
+                <h4>{{game.name}}</h4>
+                <p class="hours-played">{{game.hoursPlayed}} hours</p>
+                <p class="last-played">Last played: {{game.lastPlayed | date:'short'}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="favorite-genres-section">
+          <h3>Favorite Genres</h3>
+          <div class="genre-tags">
+            <span class="genre-tag" *ngFor="let genre of userProfile.favoriteGenres">
+              {{genre}}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Games Tab -->
+    <div class="tab-pane" *ngIf="activeTab === 'games'">
+      <div class="games-section">
+        <h3>My Games Library</h3>
+        <div class="games-grid">
+          <div class="game-card" *ngFor="let game of userProfile.recentGames" (click)="viewGame(game.id)">
+            <img [src]="game.image" [alt]="game.name" class="game-cover">
+            <div class="game-details">
+              <h4>{{game.name}}</h4>
+              <p>{{game.hoursPlayed}} hours played</p>
+              <div class="game-actions">
+                <button pButton type="button" label="Play" class="p-button-success p-button-sm">
+                  <i class="pi pi-play"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Achievements Tab -->
+    <div class="tab-pane" *ngIf="activeTab === 'achievements'">
+      <div class="achievements-section">
+        <h3>Achievements</h3>
+        <div class="achievements-grid">
+          <div class="achievement-card" *ngFor="let achievement of userProfile.achievements_list">
+            <div class="achievement-icon" [style.color]="getRarityColor(achievement.rarity)">
+              <i [class]="achievement.icon"></i>
+            </div>
+            <div class="achievement-info">
+              <h4>{{achievement.name}}</h4>
+              <p>{{achievement.description}}</p>
+              <small>Unlocked: {{achievement.unlockedDate | date:'short'}}</small>
+              <span class="rarity-badge" [style.background-color]="getRarityColor(achievement.rarity)">
+                {{achievement.rarity}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Friends Tab -->
+    <div class="tab-pane" *ngIf="activeTab === 'friends'">
+      <div class="friends-section">
+        <h3>Friends</h3>
+        <div class="friends-list">
+          <div class="friend-card" *ngFor="let friend of userProfile.friends_list" (click)="viewFriend(friend.id)">
+            <img [src]="friend.avatar" [alt]="friend.username" class="friend-avatar">
+            <div class="friend-info">
+              <h4>{{friend.username}}</h4>
+              <p class="friend-status">
+                <span
+                  class="status-indicator"
+                  [style.background-color]="getStatusColor(friend.status)"
+                ></span>
+                {{friend.status}}
+              </p>
+              <p class="current-game" *ngIf="friend.currentGame">
+                Playing: {{friend.currentGame}}
+              </p>
+            </div>
+            <div class="friend-actions">
+              <button pButton type="button" icon="pi pi-comments" class="p-button-text p-button-sm"></button>
+              <button pButton type="button" icon="pi pi-gamepad-2" class="p-button-text p-button-sm"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Tab -->
+    <div class="tab-pane" *ngIf="activeTab === 'settings'">
+      <div class="settings-section">
+        <h3>Profile Settings</h3>
+        <div class="settings-form">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              pInputText
+              id="username"
+              [(ngModel)]="editForm.username"
+              [disabled]="!isEditing"
+              class="form-control"
+            >
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              pInputText
+              id="email"
+              type="email"
+              [ngModel]="isEditing ? editForm.email : userProfile.email"
+              (ngModelChange)="isEditing ? editForm.email = $event : null"
+              [disabled]="!isEditing"
+              class="form-control"
+            >
+          </div>
+          <div class="form-group">
+            <label>Favorite Genres</label>
+            <div class="genre-checkboxes" *ngIf="isEditing">
+              <div class="genre-checkbox" *ngFor="let genre of ['Action', 'Adventure', 'RPG', 'Strategy', 'Simulation', 'Sports', 'Racing', 'Puzzle']">
+                <p-checkbox
+                  [(ngModel)]="editForm.favoriteGenres"
+                  [value]="genre"
+                  inputId="genre-{{genre}}"
+                ></p-checkbox>
+                <label [for]="'genre-' + genre">{{genre}}</label>
+              </div>
+            </div>
+            <div class="genre-display" *ngIf="!isEditing">
+              <span class="genre-tag" *ngFor="let genre of userProfile.favoriteGenres">
+                {{genre}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

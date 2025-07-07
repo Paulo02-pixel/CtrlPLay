@@ -1,0 +1,152 @@
+<div class="dashboard">
+  <!-- Featured Game Section -->
+  <div class="featured-section">
+    <div class="featured-game">
+      <img src="https://via.placeholder.com/600x300/1e3a8a/ffffff?text=Baldur%27s+Gate+3"
+           alt="Baldur's Gate 3"
+           class="featured-image">
+      <div class="featured-content">
+        <div class="featured-info">
+          <h6 class="pre-order-label">AVAILABLE PRE-ORDER</h6>
+          <h2>Baldur's Gate 3</h2>
+          <p>Gather your party, and return to the Forgotten Realms in a tale of fellowship and betrayal, sacrifice and survival, and the lure of absolute power.</p>
+          <div class="featured-actions">
+            <p-button label="PRE-ORDER NOW"
+                     (onClick)="preOrderGame()"
+                     styleClass="p-button-primary featured-btn"></p-button>
+            <p-button label="TRAILER"
+                     icon="pi pi-play"
+                     (onClick)="playTrailer()"
+                     styleClass="p-button-outlined featured-btn"></p-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Games List -->
+    <div class="quick-games">
+      <div class="quick-game"
+           *ngFor="let game of quickGames"
+           (click)="viewGameDetail(game.id)">
+        <img [src]="game.image" [alt]="game.title">
+        <div class="quick-game-info">
+          <h6>{{ game.title }}</h6>
+          <p>{{ game.genre }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hot Games Section -->
+  <div class="section">
+    <div class="section-header">
+      <h3>Hottest game!</h3>
+      <div class="section-actions">
+        <p-button icon="pi pi-chevron-left"
+                 styleClass="p-button-text nav-btn"></p-button>
+        <p-button icon="pi pi-chevron-right"
+                 styleClass="p-button-text nav-btn"></p-button>
+        <p-button label="View All"
+                 (onClick)="navigateToSection('hot')"
+                 styleClass="p-button-text view-all-btn"></p-button>
+      </div>
+    </div>
+    <div class="games-grid">
+      <div class="game-card hot-game"
+           *ngFor="let game of hotGames"
+           (click)="viewGameDetail(game.id)">
+        <div class="game-image">
+          <img [src]="game.image" [alt]="game.title">
+          <div class="game-overlay">
+            <p-button icon="pi pi-play"
+                     styleClass="p-button-rounded p-button-text play-btn"></p-button>
+          </div>
+          <div class="game-badges">
+            <span class="badge hot" *ngIf="game.isHot">🔥</span>
+            <span class="badge discount" *ngIf="game.discount">-{{ game.discount }}%</span>
+          </div>
+        </div>
+        <div class="game-info">
+          <h5>{{ game.title }}</h5>
+          <div class="game-meta">
+            <div class="price">
+              <span class="current-price">${{ game.price }}</span>
+              <span class="original-price" *ngIf="game.originalPrice">${{ game.originalPrice }}</span>
+            </div>
+            <div class="rating">
+              <i class="pi pi-star-fill"></i>
+              <span>{{ game.rating }}</span>
+            </div>
+            <div class="platforms">
+              <i class="pi pi-desktop" *ngIf="game.platforms.includes('pc')"></i>
+              <i class="pi pi-mobile" *ngIf="game.platforms.includes('mobile')"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Genres -->
+  <div class="section">
+    <div class="section-header">
+      <h3>Game genres</h3>
+      <div class="section-actions">
+        <p-button icon="pi pi-chevron-left"
+                 styleClass="p-button-text nav-btn"></p-button>
+        <p-button icon="pi pi-chevron-right"
+                 styleClass="p-button-text nav-btn"></p-button>
+      </div>
+    </div>
+    <div class="genres-list">
+      <div class="genre-chip"
+           *ngFor="let genre of genres"
+           [class.active]="selectedGenre === genre.id"
+           (click)="selectGenre(genre.id)">
+        <i [class]="genre.icon"></i>
+        <span>{{ genre.name }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top 20 Free Games -->
+  <div class="section">
+    <div class="section-header">
+      <h3>Top 20 free games</h3>
+      <div class="section-actions">
+        <p-button icon="pi pi-chevron-left"
+                 styleClass="p-button-text nav-btn"></p-button>
+        <p-button icon="pi pi-chevron-right"
+                 styleClass="p-button-text nav-btn"></p-button>
+        <p-button label="View All"
+                 (onClick)="navigateToSection('free')"
+                 styleClass="p-button-text view-all-btn"></p-button>
+      </div>
+    </div>
+    <div class="games-grid">
+      <div class="game-card"
+           *ngFor="let game of freeGames"
+           (click)="viewGameDetail(game.id)">
+        <div class="game-image">
+          <img [src]="game.image" [alt]="game.title">
+          <div class="game-overlay">
+            <p-button icon="pi pi-play"
+                     styleClass="p-button-rounded p-button-text play-btn"></p-button>
+          </div>
+        </div>
+        <div class="game-info">
+          <h5>{{ game.title }}</h5>
+          <div class="game-meta">
+            <div class="price">
+              <span class="free-label">Free</span>
+            </div>
+            <div class="platforms">
+              <i class="pi pi-desktop" *ngIf="game.platforms.includes('pc')"></i>
+              <i class="pi pi-mobile" *ngIf="game.platforms.includes('mobile')"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

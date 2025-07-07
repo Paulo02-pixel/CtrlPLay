@@ -1,0 +1,228 @@
+<!-- library.component.html -->
+<div class="library-container">
+  <!-- Header Section -->
+  <div class="library-header">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h1 class="library-title">My Library</h1>
+        <p class="library-subtitle">{{ filteredGames.length }} games</p>
+      </div>
+      <div class="d-flex gap-2">
+        <button
+          class="btn btn-outline-primary"
+          (click)="toggleViewMode()"
+          [attr.aria-label]="viewMode === 'grid' ? 'Switch to list view' : 'Switch to grid view'"
+        >
+          <i [class]="viewMode === 'grid' ? 'pi pi-list' : 'pi pi-th-large'"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="search-filters-section">
+      <div class="row g-3 mb-4">
+        <div class="col-md-6">
+          <div class="search-box">
+            <i class="pi pi-search search-icon"></i>
+            <input
+              type="text"
+              class="form-control ps-5"
+              placeholder="Search games..."
+              [(ngModel)]="searchTerm"
+              (input)="onSearchChange()"
+            >
+          </div>
+        </div>
+        <div class="col-md-3">
+          <p-dropdown
+            [options]="filterOptions"
+            [(ngModel)]="selectedFilter"
+            (onChange)="onFilterChange()"
+            placeholder="Filter by status"
+            styleClass="w-100"
+          ></p-dropdown>
+        </div>
+        <div class="col-md-3">
+          <p-dropdown
+            [options]="sortOptions"
+            [(ngModel)]="selectedSort"
+            (onChange)="onSortChange()"
+            placeholder="Sort by"
+            styleClass="w-100"
+          ></p-dropdown>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Collections Section -->
+  <div class="collections-section mb-5">
+    <h3 class="section-title mb-3">Collections</h3>
+    <div class="row g-3">
+      <div class="col-md-4" *ngFor="let collection of collections">
+        <div class="collection-card">
+          <div class="collection-header">
+            <i [class]="collection.icon + ' collection-icon'"></i>
+            <div>
+              <h5 class="collection-name">{{ collection.name }}</h5>
+              <p class="collection-count">{{ collection.games.length }} games</p>
+            </div>
+          </div>
+          <div class="collection-games">
+            <div
+              class="collection-game-thumb"
+              *ngFor="let game of collection.games.slice(0, 3)"
+            >
+              <img [src]="game.image" [alt]="game.title" class="game-thumb">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Games Grid/List -->
+  <div class="games-section">
+    <h3 class="section-title mb-3">All Games</h3>
+
+    <!-- Grid View -->
+    <div
+      class="games-grid"
+      *ngIf="viewMode === 'grid'"
+    >
+      <div class="game-card" *ngFor="let game of filteredGames">
+        <div class="game-image-container">
+          <img [src]="game.image" [alt]="game.title" class="game-image">
+          <div class="game-overlay">
+            <div class="game-actions">
+              <button
+                class="btn btn-primary me-2"
+                (click)="playGame(game)"
+                [disabled]="game.status === 'updating'"
+              >
+                <i [class]="getStatusIcon(game.status)"></i>
+                {{ game.status === 'installed' ? 'Play' :
+                   game.status === 'updating' ? 'Updating...' : 'Install' }}
+              </button>
+              <button
+                class="btn btn-outline-light"
+                (click)="viewGameDetails(game.id)"
+              >
+                <i class="pi pi-eye"></i>
+              </button>
+            </div>
+          </div>
+          <div class="game-status-badge" [class]="'status-' + game.status">
+            <i [class]="getStatusIcon(game.status)"></i>
+            {{ getStatusLabel(game.status) }}
+          </div>
+        </div>
+        <div class="game-info">
+          <h4 class="game-title">{{ game.title }}</h4>
+          <p class="game-genre">{{ game.genre }}</p>
+          <div class="game-stats">
+            <div class="stat">
+              <i class="pi pi-clock"></i>
+              <span>{{ game.hoursPlayed }}h played</span>
+            </div>
+            <div class="stat">
+              <i class="pi pi-calendar"></i>
+              <span>{{ game.lastPlayed }}</span>
+            </div>
+          </div>
+          <div class="game-progress" *ngIf="game.progress > 0">
+            <div class="progress-bar-container">
+              <div
+                class="progress-bar"
+                [style.width.%]="game.progress"
+                [style.background-color]="getProgressColor(game.progress)"
+              ></div>
+            </div>
+            <span class="progress-text">{{ game.progress }}% complete</span>
+          </div>
+          <div class="game-achievements">
+            <i class="pi pi-trophy"></i>
+            <span>{{ game.achievements.earned }}/{{ game.achievements.total }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- List View -->
+    <div
+      class="games-list"
+      *ngIf="viewMode === 'list'"
+    >
+      <div class="game-list-item" *ngFor="let game of filteredGames">
+        <div class="game-list-image">
+          <img [src]="game.image" [alt]="game.title" class="game-image">
+        </div>
+        <div class="game-list-info">
+          <h4 class="game-title">{{ game.title }}</h4>
+          <p class="game-genre">{{ game.genre }}</p>
+          <div class="game-meta">
+            <span class="meta-item">
+              <i class="pi pi-clock"></i>
+              {{ game.hoursPlayed }}h
+            </span>
+            <span class="meta-item">
+              <i class="pi pi-calendar"></i>
+              {{ game.lastPlayed }}
+            </span>
+            <span class="meta-item">
+              <i class="pi pi-hdd"></i>
+              {{ game.size }}
+            </span>
+          </div>
+        </div>
+        <div class="game-list-progress">
+          <div class="progress-info" *ngIf="game.progress > 0">
+            <div class="progress-bar-container">
+              <div
+                class="progress-bar"
+                [style.width.%]="game.progress"
+                [style.background-color]="getProgressColor(game.progress)"
+              ></div>
+            </div>
+            <span class="progress-text">{{ game.progress }}%</span>
+          </div>
+        </div>
+        <div class="game-list-status">
+          <div class="status-badge" [class]="'status-' + game.status">
+            <i [class]="getStatusIcon(game.status)"></i>
+            {{ getStatusLabel(game.status) }}
+          </div>
+        </div>
+        <div class="game-list-actions">
+          <button
+            class="btn btn-primary me-2"
+            (click)="playGame(game)"
+            [disabled]="game.status === 'updating'"
+          >
+            <i [class]="getStatusIcon(game.status)"></i>
+            {{ game.status === 'installed' ? 'Play' :
+               game.status === 'updating' ? 'Updating...' : 'Install' }}
+          </button>
+          <p-button
+            icon="pi pi-ellipsis-v"
+            [text]="true"
+            severity="secondary"
+            (onClick)="viewGameDetails(game.id)"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filteredGames.length === 0">
+      <div class="empty-state-content">
+        <i class="pi pi-search empty-state-icon"></i>
+        <h3>No games found</h3>
+        <p>Try adjusting your search or filter criteria</p>
+        <button class="btn btn-primary" (click)="searchTerm = ''; selectedFilter = 'all'; filterGames()">
+          Clear Filters
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

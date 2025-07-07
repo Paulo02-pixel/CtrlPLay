@@ -1,0 +1,253 @@
+<div class="shop-container">
+  <!-- Header Section -->
+  <div class="shop-header">
+    <div class="header-content">
+      <h1 class="shop-title">
+        <i class="pi pi-shopping-cart"></i>
+        Game Store
+      </h1>
+      <p class="shop-subtitle">Discover and purchase your favorite games</p>
+    </div>
+    <div class="header-actions">
+      <div class="cart-info">
+        <p-button
+          icon="pi pi-shopping-cart"
+          [label]="cartItems > 0 ? cartItems.toString() : ''"
+          severity="info"
+          [badge]="cartItems > 0 ? cartItems.toString() : undefined"
+          badgeClass="p-badge-danger">
+        </p-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filters Section -->
+  <div class="filters-section">
+    <div class="search-container">
+      <span class="p-input-icon-left search-input">
+        <i class="pi pi-search"></i>
+        <input
+          type="text"
+          pInputText
+          placeholder="Search games..."
+          [(ngModel)]="searchQuery"
+          (input)="onSearch()"
+          class="search-field">
+      </span>
+    </div>
+
+    <div class="filters-container">
+      <div class="filter-group">
+        <label>Category</label>
+        <p-dropdown
+          [options]="categoriesDropdownSafe"
+          [(ngModel)]="selectedCategory"
+          (onChange)="onFilterChange()"
+          placeholder="Select Category">
+        </p-dropdown>
+      </div>
+
+      <div class="filter-group">
+        <label>Price Range</label>
+        <p-dropdown
+          [options]="priceRanges"
+          [(ngModel)]="selectedPriceRange"
+          (onChange)="onFilterChange()"
+          placeholder="Select Price Range">
+        </p-dropdown>
+      </div>
+
+      <div class="filter-group">
+        <label>Platform</label>
+        <p-dropdown
+          [options]="platforms"
+          [(ngModel)]="selectedPlatform"
+          (onChange)="onFilterChange()"
+          placeholder="Select Platform">
+        </p-dropdown>
+      </div>
+
+      <div class="filter-group">
+        <label>Sort by</label>
+        <p-dropdown
+          [options]="sortOptions"
+          [(ngModel)]="sortBy"
+          (onChange)="onFilterChange()"
+          placeholder="Sort by">
+        </p-dropdown>
+      </div>
+
+      <div class="filter-actions">
+        <p-button
+          label="Clear Filters"
+          icon="pi pi-filter-slash"
+          severity="secondary"
+          (click)="clearFilters()">
+        </p-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-content">
+      <p-progressSpinner strokeWidth="4"></p-progressSpinner>
+      <p>Loading games...</p>
+    </div>
+  </div>
+
+  <!-- Games Grid -->
+  <div *ngIf="!loading" class="games-section">
+    <div class="results-header">
+      <h2>
+        <span *ngIf="filteredGames.length > 0">
+          {{filteredGames.length}} Games Found
+        </span>
+        <span *ngIf="filteredGames.length === 0">
+          No Games Found
+        </span>
+      </h2>
+    </div>
+
+    <!-- No Results -->
+    <div *ngIf="filteredGames.length === 0" class="no-results">
+      <div class="no-results-content">
+        <i class="pi pi-exclamation-triangle"></i>
+        <h3>No games found</h3>
+        <p>Try adjusting your search criteria or filters.</p>
+        <p-button
+          label="Clear All Filters"
+          icon="pi pi-refresh"
+          (click)="clearFilters()">
+        </p-button>
+      </div>
+    </div>
+
+    <!-- Games Grid -->
+    <div *ngIf="filteredGames.length > 0" class="games-grid">
+      <div *ngFor="let game of filteredGames" class="game-card">
+        <div class="game-image-container">
+          <img [src]="game.image" [alt]="game.title" class="game-image">
+          <div class="game-overlay">
+            <div class="overlay-actions">
+              <p-button
+                icon="pi pi-eye"
+                severity="info"
+                [rounded]="true"
+                (click)="viewGameDetails(game.id)"
+                pTooltip="View Details">
+              </p-button>
+              <p-button
+                icon="pi pi-heart"
+                severity="secondary"
+                [rounded]="true"
+                (click)="addToWishlist(game)"
+                pTooltip="Add to Wishlist">
+              </p-button>
+            </div>
+          </div>
+
+          <!-- Sale Badge -->
+          <div *ngIf="game.isOnSale" class="sale-badge">
+            <span>-{{game.discount}}%</span>
+          </div>
+
+          <!-- Free Badge -->
+          <div *ngIf="game.isFree" class="free-badge">
+            <span>FREE</span>
+          </div>
+        </div>
+
+        <div class="game-info">
+          <h3 class="game-title" (click)="viewGameDetails(game.id)">
+            {{game.title}}
+          </h3>
+
+          <p class="game-description">
+            {{game.description}}
+          </p>
+
+          <div class="game-tags">
+            <span *ngFor="let tag of game.tags.slice(0, 3)" class="tag">
+              {{tag}}
+            </span>
+          </div>
+
+          <div class="game-rating">
+            <p-rating
+              [(ngModel)]="game.rating"
+              [readonly]="true"
+              [stars]="5">
+            </p-rating>
+            <span class="rating-text">
+              {{game.rating}} ({{game.reviews}} reviews)
+            </span>
+          </div>
+
+          <div class="game-platforms">
+            <i *ngFor="let platform of game.platforms"
+               [ngClass]="getPlatformIconClass(platform)"
+               [pTooltip]="platform | titlecase">
+            </i>
+          </div>
+
+          <div class="game-price-section">
+            <div class="price-info">
+              <span *ngIf="game.originalPrice && game.discount" class="original-price">
+                ${{ formatPrice(game.originalPrice) }}
+              </span>
+              <span class="current-price" [class.sale-price]="game.isOnSale">
+                {{formatPrice(game.price)}}
+              </span>
+            </div>
+
+            <div class="purchase-actions">
+              <p-button
+                *ngIf="!game.isFree"
+                label="Add to Cart"
+                icon="pi pi-shopping-cart"
+                severity="success"
+                (click)="addToCart(game)"
+                class="add-to-cart-btn">
+              </p-button>
+
+              <p-button
+                *ngIf="game.isFree"
+                label="Install Free"
+                icon="pi pi-download"
+                severity="info"
+                (click)="addToCart(game)"
+                class="install-btn">
+              </p-button>
+
+              <p-button
+                *ngIf="!game.isFree"
+                label="Buy Now"
+                icon="pi pi-credit-card"
+                severity="warn"
+                (click)="buyNow(game)"
+                class="buy-now-btn">
+              </p-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Featured Categories -->
+  <div class="categories-section">
+    <h2>Browse by Category</h2>
+    <div class="categories-grid text-white">
+      <div *ngFor="let category of categories"
+           class="category-card"
+           (click)="selectedCategory = category.id; onFilterChange()">
+        <div class="category-icon">
+          <i [class]="'pi ' + category.icon"></i>
+        </div>
+        <h3>{{category.name}}</h3>
+        <p>{{category.games.length}} games</p>
+      </div>
+    </div>
+  </div>
+</div>

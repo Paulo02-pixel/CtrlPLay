@@ -1,0 +1,189 @@
+<!-- news.component.html -->
+<div class="news-container">
+  <!-- Header Section -->
+  <div class="news-header">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h1 class="news-title">News & Events</h1>
+        <p class="news-subtitle">Stay updated with the latest gaming news and upcoming events</p>
+      </div>
+      <div class="header-actions">
+        <p-button
+          label="Subscribe to Newsletter"
+          icon="pi pi-envelope"
+          styleClass="p-button-outlined"
+          (click)="subscribeNewsletter()">
+        </p-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Featured News Section -->
+  <div class="featured-news-section mb-4">
+    <div class="section-header">
+      <h2 class="section-title">Featured News</h2>
+    </div>
+    <div class="row">
+      <div class="col-12 col-lg-8">
+        <div class="featured-article" *ngIf="featuredNews">
+          <div class="featured-image">
+            <img [src]="featuredNews.image" [alt]="featuredNews.title" class="img-fluid">
+            <div class="featured-badge">
+              <span class="badge bg-danger">Breaking</span>
+            </div>
+          </div>
+          <div class="featured-content">
+            <span class="featured-category">{{ featuredNews.category }}</span>
+            <h3 class="featured-title">{{ featuredNews.title }}</h3>
+            <p class="featured-excerpt">{{ featuredNews.excerpt }}</p>
+            <div class="featured-meta">
+              <span class="author">By {{ featuredNews.author }}</span>
+              <span class="date">{{ featuredNews.publishDate | date:'medium' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-4">
+        <div class="trending-news">
+          <h4 class="trending-title">Trending Now</h4>
+          <div class="trending-item" *ngFor="let trend of trendingNews">
+            <div class="trending-image">
+              <img [src]="trend.image" [alt]="trend.title" class="img-fluid">
+            </div>
+            <div class="trending-content">
+              <h5 class="trending-item-title">{{ trend.title }}</h5>
+              <span class="trending-meta">{{ trend.publishDate | date:'shortDate' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters and Search -->
+  <div class="filters-section mb-4">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <div class="filter-tabs">
+          <p-button
+            *ngFor="let category of categories"
+            [label]="category.name"
+            [styleClass]="selectedCategory === category.value ? 'p-button-sm' : 'p-button-sm p-button-outlined'"
+            (click)="filterByCategory(category.value)"
+            class="me-2 mb-2">
+          </p-button>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="search-box">
+          <p-iconField iconPosition="left">
+            <p-inputIcon styleClass="pi pi-search"></p-inputIcon>
+            <input
+              type="text"
+              pInputText
+              placeholder="Search news..."
+              [(ngModel)]="searchQuery"
+              (input)="searchNews()"
+              class="form-control">
+          </p-iconField>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- News Grid -->
+  <div class="news-grid">
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-4 mb-4" *ngFor="let article of filteredNews">
+        <div class="news-card">
+          <div class="news-image">
+            <img [src]="article.image" [alt]="article.title" class="img-fluid">
+            <div class="news-overlay">
+              <span class="news-category">{{ article.category }}</span>
+            </div>
+          </div>
+          <div class="news-content">
+            <h4 class="news-title">{{ article.title }}</h4>
+            <p class="news-excerpt">{{ article.excerpt }}</p>
+            <div class="news-meta">
+              <div class="author-info">
+                <span class="author">{{ article.author }}</span>
+              </div>
+              <div class="news-date">
+                <span>{{ article.publishDate | date:'shortDate' }}</span>
+              </div>
+            </div>
+            <div class="news-actions">
+              <p-button
+                label="Read More"
+                icon="pi pi-arrow-right"
+                styleClass="p-button-text p-button-sm"
+                (click)="readArticle(article.id)">
+              </p-button>
+              <div class="news-stats">
+                <span class="likes">
+                  <i class="pi pi-heart"></i>
+                  {{ article.likes }}
+                </span>
+                <span class="comments">
+                  <i class="pi pi-comment"></i>
+                  {{ article.comments }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load More Button -->
+  <div class="load-more-section text-center mt-4" *ngIf="hasMoreNews">
+    <p-button
+      label="Load More News"
+      icon="pi pi-refresh"
+      styleClass="p-button-outlined"
+      [loading]="loadingMore"
+      (click)="loadMoreNews()">
+    </p-button>
+  </div>
+
+  <!-- Upcoming Events Section -->
+  <div class="events-section mt-5">
+    <div class="section-header">
+      <h2 class="section-title">Upcoming Events</h2>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-4 mb-4" *ngFor="let event of upcomingEvents">
+        <div class="event-card">
+          <div class="event-date">
+            <span class="day">{{ event.date | date:'dd' }}</span>
+            <span class="month">{{ event.date | date:'MMM' }}</span>
+          </div>
+          <div class="event-content">
+            <h4 class="event-title">{{ event.title }}</h4>
+            <p class="event-description">{{ event.description }}</p>
+            <div class="event-meta">
+              <span class="event-time">
+                <i class="pi pi-clock"></i>
+                {{ event.time }}
+              </span>
+              <span class="event-location">
+                <i class="pi pi-map-marker"></i>
+                {{ event.location }}
+              </span>
+            </div>
+          </div>
+          <div class="event-actions">
+            <p-button
+              label="Learn More"
+              icon="pi pi-info-circle"
+              styleClass="p-button-sm p-button-outlined"
+              (click)="viewEvent(event.id)">
+            </p-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

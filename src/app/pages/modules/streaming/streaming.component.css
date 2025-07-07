@@ -1,0 +1,843 @@
+
+.streaming-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.streaming-header {
+  margin-bottom: 3rem;
+}
+
+.streaming-header .header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.streaming-header .header-content .title-section h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: var(--text-color);
+}
+.streaming-header .header-content .title-section p {
+  color: var(--text-color-secondary);
+  margin: 0;
+  font-size: 1.1rem;
+}
+.streaming-header .header-content .search-section .search-box {
+  position: relative;
+  width: 400px;
+}
+.streaming-header .header-content .search-section .search-box i {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-color-secondary);
+}
+.streaming-header .header-content .search-section .search-box input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 0.5rem;
+  background: var(--surface-ground);
+  color: var(--text-color);
+  font-size: 1rem;
+}
+.streaming-header .header-content .search-section .search-box input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.1);
+}
+.streaming-header .header-content .search-section .search-box input::placeholder {
+  color: var(--text-color-secondary);
+}
+
+/* Featured Stream Section */
+.featured-section {
+  margin-bottom: 3rem;
+}
+.featured-section .featured-stream {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  background: var(--surface-card);
+  border-radius: 1rem;
+  padding: 2rem;
+  border: 1px solid var(--surface-border);
+}
+.featured-section .featured-stream .featured-thumbnail {
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  cursor: pointer;
+}
+.featured-section .featured-stream .featured-thumbnail img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.featured-section .featured-stream .featured-thumbnail .live-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: #ff4757;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.featured-section .featured-stream .featured-thumbnail .live-badge i {
+  font-size: 0.5rem;
+}
+.featured-section .featured-stream .featured-thumbnail .viewer-count {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.featured-section .featured-stream .featured-thumbnail .play-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.featured-section .featured-stream .featured-thumbnail .play-overlay i {
+  font-size: 1.5rem;
+}
+.featured-section .featured-stream .featured-thumbnail:hover img {
+  transform: scale(1.05);
+}
+.featured-section .featured-stream .featured-thumbnail:hover .play-overlay {
+  opacity: 1;
+}
+.featured-section .featured-stream .featured-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.featured-section .featured-stream .featured-info .streamer-info {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.featured-section .featured-stream .featured-info .streamer-info .streamer-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.featured-section .featured-stream .featured-info .streamer-info .streamer-details h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+.featured-section .featured-stream .featured-info .streamer-info .streamer-details .streamer-name {
+  margin: 0 0 0.25rem 0;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+.featured-section .featured-stream .featured-info .streamer-info .streamer-details .game-name {
+  margin: 0;
+  color: var(--text-color-secondary);
+}
+.featured-section .featured-stream .featured-info .featured-description {
+  margin-bottom: 1.5rem;
+}
+.featured-section .featured-stream .featured-info .featured-description p {
+  margin: 0;
+  color: var(--text-color-secondary);
+  line-height: 1.6;
+}
+.featured-section .featured-stream .featured-info .featured-actions {
+  display: flex;
+  gap: 1rem;
+}
+.featured-section .featured-stream .featured-info .featured-actions .btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+.featured-section .featured-stream .featured-info .featured-actions .btn.btn-primary {
+  background: var(--primary-color);
+  color: white;
+}
+.featured-section .featured-stream .featured-info .featured-actions .btn.btn-primary:hover {
+  background: var(--primary-color-dark);
+  transform: translateY(-2px);
+}
+.featured-section .featured-stream .featured-info .featured-actions .btn.btn-outline {
+  background: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--surface-border);
+}
+.featured-section .featured-stream .featured-info .featured-actions .btn.btn-outline:hover {
+  background: var(--surface-hover);
+  transform: translateY(-2px);
+}
+
+/* Categories Section */
+.categories-section {
+  margin-bottom: 3rem;
+}
+.categories-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  color: var(--text-color);
+}
+.categories-section .categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.categories-section .categories-grid .category-card {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.categories-section .categories-grid .category-card .category-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--surface-ground);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.categories-section .categories-grid .category-card .category-icon i {
+  font-size: 1.25rem;
+  color: var(--text-color-secondary);
+}
+.categories-section .categories-grid .category-card .category-info h4 {
+  margin: 0 0 0.25rem 0;
+  color: var(--text-color);
+  font-size: 1rem;
+}
+.categories-section .categories-grid .category-card .category-info p {
+  margin: 0;
+  color: var(--text-color-secondary);
+  font-size: 0.875rem;
+}
+.categories-section .categories-grid .category-card:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.categories-section .categories-grid .category-card.active {
+  border-color: var(--primary-color);
+  background: rgba(var(--primary-color-rgb), 0.1);
+}
+.categories-section .categories-grid .category-card.active .category-icon {
+  background: var(--primary-color);
+}
+.categories-section .categories-grid .category-card.active .category-icon i {
+  color: white;
+}
+
+/* Streams Section */
+.streams-section .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.streams-section .section-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-color);
+}
+.streams-section .section-header .stream-count {
+  color: var(--text-color-secondary);
+  font-size: 0.875rem;
+}
+.streams-section .streams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.streams-section .streams-grid .stream-card {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.streams-section .streams-grid .stream-card .stream-thumbnail {
+  position: relative;
+}
+.streams-section .streams-grid .stream-card .stream-thumbnail img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+.streams-section .streams-grid .stream-card .stream-thumbnail .live-indicator {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: #ff4757;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.streams-section .streams-grid .stream-card .stream-thumbnail .live-indicator i {
+  font-size: 0.5rem;
+}
+.streams-section .streams-grid .stream-card .stream-thumbnail .viewer-badge {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.streams-section .streams-grid .stream-card .stream-info {
+  padding: 1rem;
+}
+.streams-section .streams-grid .stream-card .stream-info .stream-header {
+  display: flex;
+  gap: 0.75rem;
+}
+.streams-section .streams-grid .stream-card .stream-info .stream-header .stream-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.streams-section .streams-grid .stream-card .stream-info .stream-header .stream-details {
+  flex: 1;
+}
+.streams-section .streams-grid .stream-card .stream-info .stream-header .stream-details h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  color: var(--text-color);
+  line-height: 1.3;
+}
+.streams-section .streams-grid .stream-card .stream-info .stream-header .stream-details .stream-streamer {
+  margin: 0 0 0.25rem 0;
+  color: var(--primary-color);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.streams-section .streams-grid .stream-card .stream-info .stream-header .stream-details .stream-game {
+  margin: 0;
+  color: var(--text-color-secondary);
+  font-size: 0.875rem;
+}
+.streams-section .streams-grid .stream-card .stream-info .stream-actions {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: flex-end;
+}
+.streams-section .streams-grid .stream-card .stream-info .stream-actions .follow-btn {
+  background: var(--surface-ground);
+  border: 1px solid var(--surface-border);
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: var(--text-color-secondary);
+  transition: all 0.3s ease;
+}
+.streams-section .streams-grid .stream-card .stream-info .stream-actions .follow-btn:hover {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+.streams-section .streams-grid .stream-card:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+}
+.empty-state .empty-icon {
+  margin-bottom: 1rem;
+}
+.empty-state .empty-icon i {
+  font-size: 3rem;
+  color: var(--text-color-secondary);
+}
+.empty-state h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-color);
+}
+.empty-state p {
+  margin: 0;
+  color: var(--text-color-secondary);
+}
+
+@media (max-width: 768px) {
+  .streaming-container {
+    padding: 1rem;
+  }
+  .streaming-header .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .streaming-header .header-content .search-section .search-box {
+    width: 100%;
+  }
+  .featured-section .featured-stream {
+    grid-template-columns: 1fr;
+  }
+  .categories-section .categories-grid {
+    grid-template-columns: 1fr;
+  }
+  .streams-section .streams-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* The following section replaces the invalid nested CSS with valid flat CSS selectors */
+
+.featured-section {
+  margin-bottom: 3rem;
+}
+.featured-section .featured-stream {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  background: var(--surface-card);
+  border-radius: 1rem;
+  padding: 2rem;
+  border: 1px solid var(--surface-border);
+}
+.featured-section .featured-stream .featured-thumbnail {
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  cursor: pointer;
+}
+.featured-section .featured-stream .featured-thumbnail img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.featured-section .featured-stream .featured-thumbnail .live-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: #ff4757;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.featured-section .featured-stream .featured-thumbnail .live-badge i {
+  font-size: 0.5rem;
+}
+.featured-section .featured-stream .featured-thumbnail .viewer-count {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.featured-section .featured-stream .featured-thumbnail .play-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.featured-section .featured-stream .featured-thumbnail .play-overlay i {
+  font-size: 1.5rem;
+}
+.featured-section .featured-stream .featured-thumbnail:hover img {
+  transform: scale(1.05);
+}
+.featured-section .featured-stream .featured-thumbnail:hover .play-overlay {
+  opacity: 1;
+}
+.featured-section .featured-stream .featured-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.featured-section .featured-stream .featured-info .streamer-info {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.featured-section .featured-stream .featured-info .streamer-info .streamer-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.featured-section .featured-stream .featured-info .streamer-info .streamer-details h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+.featured-section .featured-stream .featured-info .streamer-info .streamer-details .streamer-name {
+  margin: 0 0 0.25rem 0;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+.featured-section .featured-stream .featured-info .streamer-info .streamer-details .game-name {
+  margin: 0;
+  color: var(--text-color-secondary);
+}
+.featured-section .featured-stream .featured-info .featured-description {
+  margin-bottom: 1.5rem;
+}
+.featured-section .featured-stream .featured-info .featured-description p {
+  margin: 0;
+  color: var(--text-color-secondary);
+  line-height: 1.6;
+}
+.featured-section .featured-stream .featured-info .featured-actions {
+  display: flex;
+  gap: 1rem;
+}
+.featured-section .featured-stream .featured-info .featured-actions .btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+.featured-section .featured-stream .featured-info .featured-actions .btn.btn-primary {
+  background: var(--primary-color);
+  color: white;
+}
+.featured-section .featured-stream .featured-info .featured-actions .btn.btn-primary:hover {
+  background: var(--primary-color-dark);
+  transform: translateY(-2px);
+}
+.featured-section .featured-stream .featured-info .featured-actions .btn.btn-outline {
+  background: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--surface-border);
+}
+.featured-section .featured-stream .featured-info .featured-actions .btn.btn-outline:hover {
+  background: var(--surface-hover);
+  transform: translateY(-2px);
+}
+
+/* Categories Section */
+.categories-section {
+  margin-bottom: 3rem;
+}
+.categories-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  color: var(--text-color);
+}
+.categories-section .categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.categories-section .categories-grid .category-card {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.categories-section .categories-grid .category-card .category-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--surface-ground);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.categories-section .categories-grid .category-card .category-icon i {
+  font-size: 1.25rem;
+  color: var(--text-color-secondary);
+}
+.categories-section .categories-grid .category-card .category-info h4 {
+  margin: 0 0 0.25rem 0;
+  color: var(--text-color);
+  font-size: 1rem;
+}
+.categories-section .categories-grid .category-card .category-info p {
+  margin: 0;
+  color: var(--text-color-secondary);
+  font-size: 0.875rem;
+}
+.categories-section .categories-grid .category-card:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.categories-section .categories-grid .category-card.active {
+  border-color: var(--primary-color);
+  background: rgba(var(--primary-color-rgb), 0.1);
+}
+.categories-section .categories-grid .category-card.active .category-icon {
+  background: var(--primary-color);
+}
+.categories-section .categories-grid .category-card.active .category-icon i {
+  color: white;
+}
+
+/* Streams Section */
+.streams-section .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.streams-section .section-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-color);
+}
+.streams-section .section-header .stream-count {
+  color: var(--text-color-secondary);
+  font-size: 0.875rem;
+}
+.streams-section .streams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.streams-section .streams-grid .stream-card {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.streams-section .streams-grid .stream-card .stream-thumbnail {
+  position: relative;
+}
+.streams-section .streams-grid .stream-card .stream-thumbnail img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+.streams-section .streams-grid .stream-card .stream-thumbnail .live-indicator {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: #ff4757;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.streams-section .streams-grid .stream-card .stream-thumbnail .live-indicator i {
+  font-size: 0.5rem;
+}
+.streams-section .streams-grid .stream-card .stream-thumbnail .viewer-badge {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.streams-section .streams-grid .stream-card .stream-info {
+  padding: 1rem;
+}
+.streams-section .streams-grid .stream-card .stream-info .stream-header {
+  display: flex;
+  gap: 0.75rem;
+}
+.streams-section .streams-grid .stream-card .stream-info .stream-header .stream-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.streams-section .streams-grid .stream-card .stream-info .stream-header .stream-details {
+  flex: 1;
+}
+.streams-section .streams-grid .stream-card .stream-info .stream-header .stream-details h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  color: var(--text-color);
+  line-height: 1.3;
+}
+.streams-section .streams-grid .stream-card .stream-info .stream-header .stream-details .stream-streamer {
+  margin: 0 0 0.25rem 0;
+  color: var(--primary-color);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.streams-section .streams-grid .stream-card .stream-info .stream-header .stream-details .stream-game {
+  margin: 0;
+  color: var(--text-color-secondary);
+  font-size: 0.875rem;
+}
+.streams-section .streams-grid .stream-card .stream-info .stream-actions {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: flex-end;
+}
+.streams-section .streams-grid .stream-card .stream-info .stream-actions .follow-btn {
+  background: var(--surface-ground);
+  border: 1px solid var(--surface-border);
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: var(--text-color-secondary);
+  transition: all 0.3s ease;
+}
+.streams-section .streams-grid .stream-card .stream-info .stream-actions .follow-btn:hover {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+.streams-section .streams-grid .stream-card:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+}
+.empty-state .empty-icon {
+  margin-bottom: 1rem;
+}
+.empty-state .empty-icon i {
+  font-size: 3rem;
+  color: var(--text-color-secondary);
+}
+.empty-state h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-color);
+}
+.empty-state p {
+  margin: 0;
+  color: var(--text-color-secondary);
+}
+
+@media (max-width: 768px) {
+  .streaming-container {
+    padding: 1rem;
+
+    .streaming-header {
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+
+        .search-section .search-box {
+          width: 100%;
+        }
+      }
+    }
+
+    .featured-section {
+      .featured-stream {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .categories-section {
+      .categories-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .streams-section {
+      .streams-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}

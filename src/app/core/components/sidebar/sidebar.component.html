@@ -1,0 +1,91 @@
+<div class="sidebar">
+      <!-- Logo -->
+      <div class="logo-section">
+        <div class="logo">
+          <i class="pi pi-gamepad-2"></i>
+          <span>CtrlPlay</span>
+        </div>
+      </div>
+
+      <!-- Games Menu -->
+      <div class="menu-section">
+        <h6 class="menu-title">Games</h6>
+        <div class="menu-items">
+          <div
+            class="menu-item"
+            [class.active]="isActive('/ctrlplay/dashboard')"
+            (click)="navigate('/ctrlplay/dashboard')"
+          >
+            <i class="pi pi-compass"></i>
+            <span>Discover</span>
+          </div>
+          <div
+            class="menu-item"
+            [class.active]="isActive('/ctrlplay/shop')"
+            (click)="navigate('/ctrlplay/shop')"
+          >
+            <i class="pi pi-shopping-cart"></i>
+            <span>Shop</span>
+          </div>
+          <div
+            class="menu-item"
+            [class.active]="isActive('/ctrlplay/library')"
+            (click)="navigate('/ctrlplay/library')"
+          >
+            <i class="pi pi-book"></i>
+            <span>My Library</span>
+          </div>
+          <div
+            class="menu-item"
+            [class.active]="isActive('/ctrlplay/news')"
+            (click)="navigate('/ctrlplay/news')"
+          >
+            <i class="pi pi-calendar"></i>
+            <span>News & Event</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social Menu -->
+      <div class="menu-section">
+        <h6 class="menu-title">Social</h6>
+        <div class="menu-items">
+          <div
+            class="menu-item"
+            [class.active]="isActive('/ctrlplay/streaming')"
+            (click)="navigate('/ctrlplay/streaming')"
+          >
+            <i class="pi pi-video"></i>
+            <span>Live Streaming</span>
+          </div>
+          <div
+            class="menu-item"
+            [class.active]="isActive('/ctrlplay/community')"
+            (click)="navigate('/ctrlplay/community')"
+          >
+            <i class="pi pi-users"></i>
+            <span>Community</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme Toggle -->
+      <div class="theme-toggle">
+        <button
+          class="theme-btn"
+          [class.active]="!isDarkMode"
+          (click)="toggleTheme()"
+        >
+          <i class="pi pi-sun"></i>
+          <span>Light</span>
+        </button>
+        <button
+          class="theme-btn"
+          [class.active]="isDarkMode"
+          (click)="toggleTheme()"
+        >
+          <i class="pi pi-moon"></i>
+          <span>Dark</span>
+        </button>
+      </div>
+    </div>
